@@ -6,5 +6,5 @@ Test install in Claude Code:
 
 ```
 claude plugin marketplace add publishify/aiplugin
-claude plugin install publishify-spike@publishify
+claude plugin install publishify-spike@publishify-test
 ```
