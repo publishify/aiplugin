@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "publishify-spike": {
+      "type": "http",
+      "url": "https://publishify-spike.aliosmanakcaoglu.workers.dev/mcp"
+    }
+  }
+}

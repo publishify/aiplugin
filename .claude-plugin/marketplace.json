@@ -1,0 +1,14 @@
+{
+  "name": "publishify",
+  "owner": { "name": "Publishify" },
+  "plugins": [
+    {
+      "name": "publishify-spike",
+      "source": "./spike",
+      "description": "Throwaway test plugin for Publishify's capability checks. Not the product.",
+      "version": "0.0.1",
+      "category": "productivity"
+    }
+  ],
+  "metadata": { "description": "Publishify — Your AI Editorial Board." }
+}
