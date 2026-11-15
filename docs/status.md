@@ -20,4 +20,4 @@ Cursor and Gemini CLI were not tested. ChatGPT Free/Pro, the ChatGPT packaged-sk
 
 ## Product acceptance gate
 
-A writer installs the real plugin in Claude, signs in, selects Fiction, attaches a manuscript in the AI host and receives a dashboard populated with source-verified findings. The Fiction evaluation set, including Aşk-ı Memnu, must run in Claude and record results plus observed AI usage. A successful transport spike does not satisfy this gate.
+A writer installs the real plugin in Claude, signs in, selects Fiction, attaches a manuscript in the AI host and receives a dashboard populated with source-verified findings. The Fiction evaluation set, including a full-length novel, must run in Claude and record results plus observed AI usage. A successful transport spike does not satisfy this gate.
