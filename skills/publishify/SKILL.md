@@ -60,7 +60,7 @@ python3 <this skill's folder>/scripts/board.py merge publishify-work/*.checked.j
 ## 5. Finish
 
 1. Call `finish_board` with the session.
-2. Show the person the result: the editor-in-chief's summary, then the notes in order, each with its quote and location, grouped by topic; then the Seven Stages if the editor mapped them. Offer the notes as a file to download.
+2. Show the person the result: the editor-in-chief's summary, then the notes in order, each with its quote and location, grouped by topic; then, if the editor mapped them, the stages under the title "The Wayfarer's Seven Stages (Hero's Journey template)" in the person's language (Turkish: "Yolcunun Yedi Merhalesi (Kahramanın Yolculuğu Şablonu)"). Offer the notes as a file to download.
 3. Say that the notes come from an AI and can be wrong, and that the board does not rewrite the work or give a verdict.
 
 If anything fails, tell the person what happened in plain words and what they can do; the session can be resumed later with its id.
