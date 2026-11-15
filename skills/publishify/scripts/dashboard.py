@@ -8,11 +8,13 @@ computer or in their AI's sandbox. Uses no model and sends nothing anywhere.
       {"English": "translation"} and pass it to render with --strings.
 
   python3 dashboard.py render [--title "Book"] [--language tr] [--strings FILE] [--work publishify-work]
-      Reads units.json, measure.json, the roles' *.checked.json and merged.json from the work
-      folder and writes dashboard.html there. The page works offline.
+      Reads units.json, measure.json, the roles' *.checked.json, merged.json and, when the board
+      wrote it, characters.json from the work folder and writes dashboard.html there. The page
+      works offline.
 
 Ported from the Masthead dashboard (2026-11-10): the Wayfarer's Seven Stages clock, board notes,
 key decisions, chapter bars, word and sentence patterns, every role's notes and the stage map.
+The character map (people.py) is new in Publishify.
 """
 
 import argparse
@@ -25,6 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from people import character_map  # noqa: E402
 from text import _DIALOGUE  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -271,6 +274,11 @@ def build(work, title=None, language=None, generated_at=None):
     problems = [n for n in notes if n.get("kind") != "strength" and role_of(n.get("role")) != "reader_panel"]
     decisions = [{"label": label_of(n), "text": n.get("message", ""), "evidence": refs(n.get("evidence"))} for n in problems[:MAX_DECISIONS]]
 
+    people = character_map(units, _load(os.path.join(work, "characters.json"), default={}), language.split("-")[0])
+    if people:
+        for link in people["links"]:
+            link["evidence"] = refs(link["evidence"])
+
     sentences = whole.get("sentences", 0)
     total = sum(u["words"] for u in units)
     digest = hashlib.sha256("\n\n".join("\n\n".join(u["paragraphs"]) for u in units).encode("utf-8")).hexdigest()
@@ -315,6 +323,7 @@ def build(work, title=None, language=None, generated_at=None):
             "opinions": {"editor": opinion("editor"), "reader": opinion("reader_panel")},
             "decisions": decisions,
             "disagreements": "",
+            "characters": people,
             "modules": [
                 module("developmental", "editor"),
                 module("spelling", "editor"),
@@ -428,6 +437,7 @@ def main(argv=None):
             "chapters": len(data["chapters"]),
             "notes": sum(len(m["findings"]) for m in a["modules"]),
             "stages_mapped": sum(1 for s in a["maps"]["merhale"] if s["status"] != "light"),
+            "characters_mapped": len((a.get("characters") or {}).get("nodes", [])),
             "next": "Offer dashboard.html to the person; it opens in any browser and works offline."
             + (" Some strings are in English: run `dashboard.py strings --language " + lang + "`, translate them and render again with --strings." if missing else ""),
         }, ensure_ascii=False, indent=1))

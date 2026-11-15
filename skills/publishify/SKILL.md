@@ -60,7 +60,7 @@ python3 <this skill's folder>/scripts/board.py merge publishify-work/*.checked.j
 ## 5. Finish
 
 1. Call `finish_board` with the session.
-2. Save the editor-in-chief's JSON (its summary, the notes in order and the editor's stages) over `publishify-work/merged.json`, then make the dashboard:
+2. Save the editor-in-chief's JSON (its summary, the notes in order and the editor's stages) over `publishify-work/merged.json`. For a story, also write `publishify-work/characters.json` for the character map: `{"characters":[{"name":"...","aliases":["other names the work uses"]}],"relations":[{"a":"name","b":"name","label":"who they are to each other","location":"c1p3","quote":"..."}]}`. List only characters the work names; every relation needs a quote copied from the work, and code drops the ones it cannot find. Then make the dashboard:
 
 ```
 python3 <this skill's folder>/scripts/dashboard.py render --title "<the work's title>" --language <tag> --work publishify-work

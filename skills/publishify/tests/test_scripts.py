@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
 import board  # noqa: E402
 import dashboard  # noqa: E402
+from people import character_map  # noqa: E402
 from facts import fact_lines, name_variants, names  # noqa: E402
 from quotes import check_quote, find_quote  # noqa: E402
 from text import MAX_UNIT_CHARS, TextError, canonical, measure, paragraphs, read_docx, read_epub, read_plain, split  # noqa: E402
@@ -295,6 +296,39 @@ class Dashboard(unittest.TestCase):
         missing = [s for s in dashboard.catalog(dashboard.template()) if s not in strings]
         self.assertEqual(missing, [])
         self.assertEqual(dashboard.clean_strings({"{n} words": "sözcük", "Print": "Yazdır"}), {"Print": "Yazdır"})
+
+
+class People(unittest.TestCase):
+    units = [
+        {"id": "c1", "paragraphs": ["Ali tilkiyle konuştu.", "Tilkinin gözleri parladı.", "Ali uyudu."]},
+        {"id": "c2", "paragraphs": ["Ali ile Ayşe yürüdü. Tilki onları izledi.", "Alim bir adam geldi."]},
+    ]
+    given = {
+        "characters": [{"name": "Ali"}, {"name": "Tilki", "aliases": ["tilki"]}, {"name": "Ayşe"}, {"name": "Kral"}],
+        "relations": [
+            {"a": "Ali", "b": "Tilki", "label": "dost", "location": "c1p1", "quote": "Ali tilkiyle konuştu."},
+            {"a": "Ali", "b": "Ayşe", "label": "düşman", "location": "c1p1", "quote": "Ali Ayşe'yi sevmezdi."},
+        ],
+    }
+
+    def test_counts_endings_and_ties(self):
+        m = character_map(self.units, self.given, "tr")
+        nodes = {n["name"]: n for n in m["nodes"]}
+        self.assertEqual((nodes["Ali"]["count"], nodes["Tilki"]["count"], nodes["Ayşe"]["count"]), (3, 3, 1))
+        self.assertNotIn("Kral", nodes)
+        self.assertEqual(nodes["Tilki"]["chapters"], ["c1", "c2"])
+        links = {(l["a"], l["b"]): l for l in m["links"]}
+        self.assertEqual((links[("k1", "k2")]["count"], links[("k1", "k2")]["labels"]), (2, ["dost"]))
+        self.assertEqual(links[("k1", "k3")]["labels"], [])
+
+    def test_same_map_every_time(self):
+        a, b = character_map(self.units, self.given, "tr"), character_map(self.units, self.given, "tr")
+        self.assertEqual(a, b)
+        for n in a["nodes"]:
+            self.assertTrue(0 <= n["x"] <= 1000 and 0 <= n["y"] <= 620)
+
+    def test_no_characters_no_map(self):
+        self.assertIsNone(character_map(self.units, {}, "tr"))
 
 
 if __name__ == "__main__":
