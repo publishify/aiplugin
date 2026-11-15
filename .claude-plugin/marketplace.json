@@ -1,14 +1,18 @@
 {
-  "name": "publishify-test",
-  "owner": { "name": "Publishify" },
+  "name": "publishify",
+  "owner": { "name": "Publishify", "url": "https://publishify.app" },
+  "metadata": {
+    "description": "Publishify — Your AI Editorial Board.",
+    "version": "0.1.0"
+  },
   "plugins": [
     {
-      "name": "publishify-spike",
-      "source": "./spike",
-      "description": "Throwaway test plugin for Publishify's capability checks. Not the product.",
-      "version": "0.0.1",
-      "category": "productivity"
+      "name": "publishify",
+      "source": "./",
+      "description": "An editorial board in your own AI: pick a desk, add your manuscript with +, and get quote-backed notes from an editor, a continuity checker and a reader panel. Your file never leaves your AI.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["writing", "editing", "manuscript", "fiction", "publishing", "editorial board"]
     }
-  ],
-  "metadata": { "description": "Publishify — Your AI Editorial Board." }
+  ]
 }

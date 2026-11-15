@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "publishify": {
+      "type": "http",
+      "url": "https://mcp.publishify.app"
+    }
+  }
+}
