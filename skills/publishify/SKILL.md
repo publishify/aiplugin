@@ -16,8 +16,8 @@ Speak to the person in their language throughout, and pass their language as a B
 2. Let the person choose; never choose for them.
    - If a Publishify window appears, wait for their choice from it.
    - Otherwise call `fill_form`, which asks with a plain form.
-   - If that is not supported, ask in chat: category, desk, the desk's questions, then mode (and topics for a focused review).
-3. Locked options need a licence (the form's `buy_url`) or have used this month's free previews. Say so plainly; do not work around a lock.
+   - If that is not supported, ask in chat, one step at a time, showing each question's example answer: what they wrote (the work), what they would like (board review and its mode; topics for a focused review), then the work's own questions.
+3. Locked options need Pro or have used this month's free previews. If the form's `account.licensed` is false, tell them they are on the free plan (3 previews a month) and that Pro opens from `buy_url` with their e-mail filled in, so it unlocks here once they pay. Do not work around a lock.
 
 ## 2. The file
 
@@ -28,7 +28,7 @@ Speak to the person in their language throughout, and pass their language as a B
 ## 3. Start
 
 1. A full board or focused review uses one review from the person's licence; a preview is free. Tell them which before starting, and start only when they agree.
-2. Call `start_board` with the confirmed desk, answers, mode, topics and language. Keep the `session` id. If a board stopped earlier, pass `session` to resume it; that never charges again.
+2. Call `start_board` with the confirmed work (`desk`), `service`, answers, mode, topics and language. Keep the `session` id. If a board stopped earlier, pass `session` to resume it; that never charges again.
 3. Prepare the work (Python 3, no packages needed):
 
 ```
