@@ -12,6 +12,7 @@ import zipfile
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 
 import board  # noqa: E402
+import dashboard  # noqa: E402
 from facts import fact_lines, name_variants, names  # noqa: E402
 from quotes import check_quote, find_quote  # noqa: E402
 from text import MAX_UNIT_CHARS, TextError, canonical, measure, paragraphs, read_docx, read_epub, read_plain, split  # noqa: E402
@@ -228,6 +229,72 @@ class Board(unittest.TestCase):
         path = os.path.join(self.dir, "book.pdf")
         open(path, "w").close()
         self.assertEqual(board.main(["prepare", path, "--work", self.work]), 1)
+
+
+class Dashboard(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.mkdtemp()
+        self.work = os.path.join(self.dir, "publishify-work")
+        path = os.path.join(self.dir, "book.md")
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("# Bir\n\nAli eve geldi. Herkez bir süre onu bekliyordu ve bu çok uzun bir bekleyişti.\n\n“Geldin mi?” dedi annesi.\n\n# İki\n\nAli yola çıktı.")
+        board.prepare(path, "novel", self.work)
+
+    def save(self, name, data):
+        path = os.path.join(self.work, name)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False)
+        board.check(path, self.work)
+
+    def test_needs_notes(self):
+        with self.assertRaises(dashboard.DashboardError):
+            dashboard.build(self.work)
+
+    def test_board_to_page(self):
+        self.save("editor.json", {"role": "Editor", "summary": "Kısa bir dönüş hikâyesi.", "notes": [
+            {"kind": "problem", "priority": "high", "topic": "structure", "certainty": "definite", "message": "Açılış hızlı.",
+             "evidence": [{"location": "c1p1", "quote": "Ali eve geldi."}]},
+            {"kind": "problem", "priority": "high", "topic": "structure", "message": "Uydurma.",
+             "evidence": [{"location": "c1p1", "quote": "Ali uçtu."}]},
+        ], "stages": [{"no": 1, "state": "clear", "location": "c1p1", "quote": "Ali eve geldi."},
+                      {"no": 3, "state": "implicit", "location": "c2p1", "quote": "Ali yola çıktı."},
+                      {"no": 7, "state": "not_written"}]})
+        self.save("reader_panel.json", {"role": "reader panel", "summary": "Merak uyandırıyor.", "notes": [
+            {"kind": "strength", "priority": "low", "topic": "reader", "message": "Okur 1: merak etti.",
+             "evidence": [{"location": "c1p2", "quote": "“Geldin mi?” dedi annesi."}]}]})
+        data = dashboard.build(self.work, "Dönüş", "tr", generated_at="2026-11-15T00:00:00Z")
+        a = data["analysis"]
+        self.assertEqual(data["locale"], "tr")
+        self.assertEqual([c["review"]["status"] for c in data["chapters"]], ["yellow", "green"])
+        self.assertEqual(data["chapters"][0]["dialogue_paragraphs"], 1)
+        stages = {s["id"]: s for s in a["maps"]["merhale"]}
+        self.assertEqual((stages[1]["status"], stages[1]["name"], stages[1]["chapters"]), ("green", "Çağrı", ["c1"]))
+        self.assertEqual((stages[3]["status"], stages[7]["status"], stages[2]["status"]), ("yellow", "light", "light"))
+        self.assertEqual(a["current"]["chapter"], "c2")
+        self.assertEqual([d["text"] for d in a["decisions"]], ["Açılış hızlı."])
+        modules = {m["id"]: m for m in a["modules"]}
+        self.assertEqual(modules["continuity"]["state"], "not_run")
+        self.assertEqual(modules["spelling"]["findings"][0]["text"], "Herkez → herkes")
+        self.assertEqual(modules["reader"]["findings"][0]["label"], "Reader reaction")
+        self.assertEqual(a["opinions"]["reader"]["summary"], "Merak uyandırıyor.")
+        self.assertNotIn("verdict", a)
+
+    def test_render_is_safe_and_translated(self):
+        self.save("editor.json", {"role": "editor", "notes": [
+            {"kind": "problem", "priority": "medium", "message": "</script><b>x</b>",
+             "evidence": [{"location": "c1p1", "quote": "Ali eve geldi."}]}]})
+        self.assertEqual(dashboard.main(["render", "--language", "tr", "--work", self.work]), 0)
+        with open(os.path.join(self.work, "dashboard.html"), encoding="utf-8") as f:
+            page = f.read()
+        self.assertNotIn("</script><b>", page)
+        self.assertIn("Bu kitap nerede duruyor", page)
+        self.assertNotIn("__PUBLISHIFY_DATA__", page)
+
+    def test_turkish_strings_cover_the_page(self):
+        strings = dashboard.builtin_strings("tr")
+        missing = [s for s in dashboard.catalog(dashboard.template()) if s not in strings]
+        self.assertEqual(missing, [])
+        self.assertEqual(dashboard.clean_strings({"{n} words": "sözcük", "Print": "Yazdır"}), {"Print": "Yazdır"})
 
 
 if __name__ == "__main__":

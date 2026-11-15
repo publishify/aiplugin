@@ -60,7 +60,14 @@ python3 <this skill's folder>/scripts/board.py merge publishify-work/*.checked.j
 ## 5. Finish
 
 1. Call `finish_board` with the session.
-2. Show the person the result: the editor-in-chief's summary, then the notes in order, each with its quote and location, grouped by topic; then, if the editor mapped them, the stages under the title "The Wayfarer's Seven Stages (Hero's Journey template)" in the person's language (Turkish: "Yolcunun Yedi Merhalesi (Kahramanın Yolculuğu Şablonu)"). Offer the notes as a file to download.
-3. Say that the notes come from an AI and can be wrong, and that the board does not rewrite the work or give a verdict.
+2. Save the editor-in-chief's JSON (its summary, the notes in order and the editor's stages) over `publishify-work/merged.json`, then make the dashboard:
+
+```
+python3 <this skill's folder>/scripts/dashboard.py render --title "<the work's title>" --language <tag> --work publishify-work
+```
+
+   It writes `publishify-work/dashboard.html`: the Wayfarer's Seven Stages clock, the board's notes and key decisions, chapter bars, word and sentence patterns, every role's notes and the stage map, each note with its quote. English and Turkish are built in. If it reports `untranslated_strings`, run `dashboard.py strings --language <tag>`, translate the `translate` list as a publishing professional would (keep every `{slot}`), save it as a JSON object `{"English": "translation"}` in `publishify-work/strings.json`, and render again with `--strings publishify-work/strings.json`.
+3. Give the person `dashboard.html` to open or download; it opens in any browser and works offline. In chat, show the editor-in-chief's summary and the three notes to look at first, each with its quote and location. If the editor mapped the stages, title them "The Wayfarer's Seven Stages (Hero's Journey template)" in the person's language (Turkish: "Yolcunun Yedi Merhalesi (Kahramanın Yolculuğu Şablonu)").
+4. Say that the notes come from an AI and can be wrong, and that the board does not rewrite the work or give a verdict.
 
 If anything fails, tell the person what happened in plain words and what they can do; the session can be resumed later with its id.
