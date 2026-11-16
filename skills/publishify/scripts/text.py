@@ -251,7 +251,20 @@ def detect_language(text):
     return best if share >= 0.04 else "und"
 
 
-_FUNCTION_WORDS = set("bir ve ile de da ki bu şu o için gibi ama daha çok en ne mi mı mu mü ya hem ise değil var yok".split())
+_FUNCTION_WORDS = {
+    "tr": "bir ve ile de da ki bu şu o için gibi ama daha çok en ne mi mı mu mü ya hem ise değil var yok",
+    "en": "the and that this these those with for from not but you your she her his him they them their there here "
+    "was were are been being have has had will would can could should what when where which who whom how why "
+    "its it's i'm don't didn't than then into out about over under all any some one two very just more most "
+    "said did does our ours yours too also only again upon",
+    "fr": "les des une que qui pas mais est sont pour dans sur par avec sans sous plus bien comme tout tous toute "
+    "toutes mon ton son mes tes ses nos vos leur leurs notre votre moi toi lui elle elles ils nous vous "
+    "c’est c'est j’ai j'ai qu’il qu'il qu’elle qu'elle qu’on qu'on n’est n'est d’un d'un d’une d'une il était "
+    "ont été être avoir fait dit très alors donc aussi encore cette ces cet cela ça ceci celui celle ceux "
+    "quand où dont car non oui peu ici là puis même aux du au en et ou ni si je tu on ne se ce me te le la "
+    "l’on l'on s’il s'il m’a m'a j’étais j'étais n’ai n'ai n’a n'a avait avais suis peut faire fit",
+}
+_FUNCTION_WORDS = {k: set(v.split()) for k, v in _FUNCTION_WORDS.items()}
 _DIALOGUE = re.compile(r"^[\"“«‘'—–-]|[\"“«].+?[\"”»]")
 
 
@@ -267,7 +280,8 @@ def measure(text, language="tr"):
     ps = paragraphs(text)
     sentences = [s for s in re.split(r"[.!?…]+(?=\s|$)", text) if words(s)]
     all_words = [lower(w, language) for w in words(text)]
-    content = [w for w in all_words if len(w) > 2 and w not in _FUNCTION_WORDS]
+    skip = _FUNCTION_WORDS.get(language.split("-")[0], set())
+    content = [w for w in all_words if len(w) > 2 and w not in skip]
     frequent = sorted(((w, c) for w, c in _tally(content).items() if c >= 3), key=lambda x: -x[1])[:30]
     grams = []
     for p in ps:

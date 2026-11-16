@@ -124,5 +124,9 @@
  "{name}: no findings, limited review": "{name}: bulgu yok, sınırlı inceleme",
  "{name}: not run": "{name}: çalışmadı",
  "{name}: {definite} definite, {preference} preference": "{name}: {definite} kesin, {preference} tercih",
- "{title}, {count} words, {status}": "{title}, {count} sözcük, {status}"
+ "{title}, {count} words, {status}": "{title}, {count} sözcük, {status}",
+ "Dark dot: where the book is now.": "Koyu nokta: kitabın şu an bulunduğu yer.",
+ "Done": "Bitti",
+ "Script": "Betik",
+ "Notes on their way": "Notların yolu"
 }

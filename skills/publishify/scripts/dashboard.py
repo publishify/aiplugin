@@ -7,7 +7,7 @@ computer or in their AI's sandbox. Uses no model and sends nothing anywhere.
       language has no built-in translation. Save the translation as a JSON object
       {"English": "translation"} and pass it to render with --strings.
 
-  python3 dashboard.py render [--title "Book"] [--language tr] [--strings FILE] [--work publishify-work]
+  python3 dashboard.py render [--title "Book"] [--language tr] [--strings FILE] [--note TEXT] [--work publishify-work]
       Reads units.json, measure.json, the roles' *.checked.json, merged.json and, when the board
       wrote it, characters.json from the work folder and writes dashboard.html there. The page
       works offline.
@@ -34,7 +34,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(HERE, "dashboard", "template.html")
 PLACEHOLDER = "__PUBLISHIFY_DATA__"
 BRAND = "Publishify"
-VERSION = "2026-11-15.1"
+VERSION = "2026-11-16.1"
 
 LABELS = {
     "status": {"green": "Clear", "yellow": "Implicit", "gray": "Absent", "light": "Not written or not read"},
@@ -138,7 +138,7 @@ def _chapter_stats(unit):
     return {"paragraphs": len(ps), "dialogue": sum(1 for p in ps if _DIALOGUE.search(p))}
 
 
-def build(work, title=None, language=None, generated_at=None):
+def build(work, title=None, language=None, generated_at=None, note=None):
     units_file = _load(os.path.join(work, "units.json"))
     measured = _load(os.path.join(work, "measure.json"))
     units = units_file["units"]
@@ -274,7 +274,7 @@ def build(work, title=None, language=None, generated_at=None):
     problems = [n for n in notes if n.get("kind") != "strength" and role_of(n.get("role")) != "reader_panel"]
     decisions = [{"label": label_of(n), "text": n.get("message", ""), "evidence": refs(n.get("evidence"))} for n in problems[:MAX_DECISIONS]]
 
-    people = character_map(units, _load(os.path.join(work, "characters.json"), default={}), language.split("-")[0])
+    people = character_map(units, _load(os.path.join(work, "characters.json"), default={}), (units_file.get("language") or language).split("-")[0])
     if people:
         for link in people["links"]:
             link["evidence"] = refs(link["evidence"])
@@ -283,7 +283,7 @@ def build(work, title=None, language=None, generated_at=None):
     total = sum(u["words"] for u in units)
     digest = hashlib.sha256("\n\n".join("\n\n".join(u["paragraphs"]) for u in units).encode("utf-8")).hexdigest()
     return {
-        "project": {"title": title or os.path.splitext(units_file.get("source") or "")[0] or None},
+        "project": {"title": title or os.path.splitext(units_file.get("source") or "")[0] or None, "note": note or ""},
         "locale": language,
         "metrics_sha256": digest,
         "summary": {
@@ -408,6 +408,7 @@ def main(argv=None):
     r.add_argument("--title", default=None)
     r.add_argument("--language", default=None)
     r.add_argument("--strings", default=None)
+    r.add_argument("--note", default=None, help="One line shown in a strip at the top, e.g. what the sample was run on.")
     r.add_argument("--work", default="publishify-work")
     args = p.parse_args(argv)
     try:
@@ -419,7 +420,7 @@ def main(argv=None):
             return 0
         from datetime import datetime, timezone
 
-        data = build(args.work, args.title, args.language, datetime.now(timezone.utc).isoformat())
+        data = build(args.work, args.title, args.language, datetime.now(timezone.utc).isoformat(), args.note)
         lang = data["locale"]
         strings = dict(builtin_strings(lang) or {})
         if args.strings:
