@@ -175,6 +175,10 @@ class Facts(unittest.TestCase):
         self.assertIn(line["sentence"], long)
         self.assertLessEqual(len(line["sentence"].split()), 40)
 
+    def test_dialogue_dash_is_not_the_opener(self):
+        self.assertEqual(names("– Mais… dit Pierre."), ["Pierre"])
+        self.assertEqual(names("« Rien n’est parfait », soupira Marie."), ["Marie"])
+
     def test_name_variants(self):
         v = name_variants(UNITS + [{"id": "b3", "body": "Kapıyı Beşiri bekledi."}])
         self.assertEqual([f"{x['rare']}~{x['common']}" for x in v], ["Bekir~Beşir"])
@@ -225,6 +229,28 @@ class Board(unittest.TestCase):
         merged = board._load(r["written"])
         self.assertEqual(merged["notes"][0]["message"], "first")
         self.assertEqual(merged["stages"], [{"no": 1, "state": "absent"}])
+
+    def test_merge_keeps_every_reader_reaction(self):
+        e = {"location": "c1p1", "quote": "Ali eve geldi."}
+        a = self.notes("a.json", {"role": "Editor", "notes": [{"kind": "strength", "priority": "low", "message": "editor", "evidence": [e]}]})
+        b = self.notes("b.json", {"role": "Reader panel", "notes": [
+            {"kind": "strength", "priority": "low", "message": "Reader 1", "evidence": [e]},
+            {"kind": "strength", "priority": "low", "message": "Reader 2", "evidence": [e]},
+        ]})
+        r = board.merge([a, b], self.work)
+        self.assertEqual((r["notes"], r["repeats_removed"]), (3, 0))
+
+    def test_check_proves_stage_quotes(self):
+        path = self.notes("editor.json", {"role": "editor", "notes": [], "stages": [
+            {"no": 1, "state": "clear", "location": "c1", "quote": "Ali uyudu."},
+            {"no": 2, "state": "implicit", "location": "c1p1", "quote": "Ali denize girdi."},
+            {"no": 3, "state": "absent"},
+        ]})
+        r = board.check(path, self.work)
+        self.assertEqual(r["stages_without_quote"], 1)
+        stages = board._load(r["written"])["stages"]
+        self.assertEqual(stages[0], {"no": 1, "state": "clear", "location": "c2p1", "quote": "Ali uyudu."})
+        self.assertEqual(stages[1], {"no": 2, "state": "implicit"})
 
     def test_unsupported_format(self):
         path = os.path.join(self.dir, "book.pdf")
@@ -279,6 +305,22 @@ class Dashboard(unittest.TestCase):
         self.assertEqual(modules["reader"]["findings"][0]["label"], "Reader reaction")
         self.assertEqual(a["opinions"]["reader"]["summary"], "Merak uyandırıyor.")
         self.assertNotIn("verdict", a)
+
+    def test_one_file_per_reader_and_no_repeated_chapter_note(self):
+        both = [{"location": "c1p1", "quote": "Ali eve geldi."}, {"location": "c2p1", "quote": "Ali yola çıktı."}]
+        self.save("editor.json", {"role": "Editor", "notes": [
+            {"kind": "problem", "priority": "high", "topic": "structure", "message": "İki bölümde.", "evidence": both},
+            {"kind": "problem", "priority": "medium", "topic": "structure", "message": "Yalnız ikincide.", "evidence": both[1:]},
+        ]})
+        for i in (1, 2):
+            self.save(f"reader{i}.json", {"role": "Reader panel", "summary": f"Okur {i}.", "notes": [
+                {"kind": "strength", "priority": "low", "topic": "reader", "message": f"Okur {i}: merak etti.", "evidence": both[:1]}]})
+        data = dashboard.build(self.work, "Dönüş", "tr")
+        self.assertEqual([c["review"]["note"] for c in data["chapters"]], ["İki bölümde.", "Yalnız ikincide."])
+        self.assertEqual(dashboard._first_sentence("Çizim yok. Yerleri işaretlenmeli."), "Çizim yok.")
+        reader = next(m for m in data["analysis"]["modules"] if m["id"] == "reader")
+        self.assertEqual(len(reader["findings"]), 2)
+        self.assertEqual(data["analysis"]["opinions"]["reader"]["summary"], "Okur 1. Okur 2.")
 
     def test_render_is_safe_and_translated(self):
         self.save("editor.json", {"role": "editor", "notes": [

@@ -43,7 +43,7 @@ Repeat until `next_task` says `done`:
 
 1. Call `next_task` with the session. It returns one role's card.
 2. Play that role on the work exactly as the card says, reading `units.json` (the continuity checker also reads `facts.json`; the editor also reads `measure.json`). If this app can run a separate agent or task, give each role, and each reader of the reader panel, its own, so they do not influence each other.
-3. Save the role's JSON notes to `publishify-work/<role>.json`, then check its quotes:
+3. Save the role's JSON notes to `publishify-work/<role>.json` (for the reader panel one file per reader is fine: `reader1.json`, `reader2.json`, `reader3.json`, each with `"role":"Reader panel"`), then check its quotes:
 
 ```
 python3 <this skill's folder>/scripts/board.py check publishify-work/<role>.json --work publishify-work

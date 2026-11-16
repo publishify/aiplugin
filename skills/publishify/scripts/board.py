@@ -105,13 +105,40 @@ def _check_notes(notes, units):
     return kept, dropped, moved
 
 
+def _check_stages(stages, units):
+    """A stage keeps its state; its quote is checked like any other, and one the work does not
+    hold is taken out so the page never shows it."""
+    out, unproven = [], 0
+    for s in stages:
+        if not isinstance(s, dict):
+            continue
+        s = dict(s)
+        if s.get("quote"):
+            r = check_quote(units, str(s.get("location", "")), str(s["quote"]))
+            if r["status"] == "found":
+                s["location"], s["quote"] = r["location"], r["original"]
+            else:
+                s.pop("quote", None)
+                s.pop("location", None)
+                unproven += 1
+        out.append(s)
+    return out, unproven
+
+
+def _is_reader(note):
+    return "reader" in str(note.get("role") or "").lower()
+
+
 def check(path, work):
     units = _load(os.path.join(work, "units.json"))["units"]
     data = _load(path)
     kept, dropped, moved = _check_notes(_notes_of(data), units)
     out = dict(data, notes=kept) if isinstance(data, dict) else {"notes": kept}
+    stages_unproven = 0
+    if isinstance(data, dict) and isinstance(data.get("stages"), list):
+        out["stages"], stages_unproven = _check_stages(data["stages"], units)
     target = _write(os.path.dirname(os.path.abspath(path)), os.path.basename(path).replace(".json", "") + ".checked.json", out)
-    return {"kept": len(kept), "dropped": dropped, "locations_fixed": moved, "written": target}
+    return {"kept": len(kept), "dropped": dropped, "locations_fixed": moved, "stages_without_quote": stages_unproven, "written": target}
 
 
 _RANK = {"high": 0, "medium": 1, "low": 2}
@@ -124,15 +151,16 @@ def merge(paths, work):
     seen, merged = set(), []
     for n in kept:
         key = (n.get("kind"), tuple((e["location"], e["quote"]) for e in n["evidence"]))
-        if key in seen:
-            continue
-        seen.add(key)
+        if not _is_reader(n):  # a reader's reaction stays, even on a quote another note uses
+            if key in seen:
+                continue
+            seen.add(key)
         merged.append(n)
     merged.sort(key=lambda n: (_RANK.get(n.get("priority"), 3), 0 if n.get("kind") == "problem" else 1))
     stages = next((d.get("stages") for d in datas if isinstance(d, dict) and d.get("stages")), None)
     out = {"role": "editor-in-chief", "notes": merged}
     if stages:
-        out["stages"] = stages
+        out["stages"] = _check_stages(stages, units)[0]
     target = _write(work, "merged.json", out)
     return {"notes": len(merged), "dropped_for_quotes": dropped, "repeats_removed": len(kept) - len(merged), "written": target}
 

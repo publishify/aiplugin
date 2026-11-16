@@ -133,6 +133,11 @@ def _module_of(note):
     return "developmental"
 
 
+def _first_sentence(message):
+    m = re.match(r"(.+?[.!?…])(?:\s|$)", str(message), flags=re.S)
+    return m.group(1) if m else str(message)
+
+
 def _chapter_stats(unit):
     ps = unit["paragraphs"]
     return {"paragraphs": len(ps), "dialogue": sum(1 for p in ps if _DIALOGUE.search(p))}
@@ -151,7 +156,14 @@ def build(work, title=None, language=None, generated_at=None, note=None):
     for path in sorted(glob.glob(os.path.join(work, "*.checked.json"))):
         data = _load(path)
         if isinstance(data, dict):
-            roles[role_of(data.get("role") or os.path.basename(path).split(".")[0])] = data
+            role = role_of(data.get("role") or os.path.basename(path).split(".")[0])
+            if role in roles:  # one file per reader: the panel is all of them together
+                first = roles[role]
+                first["notes"] = (first.get("notes") or []) + (data.get("notes") or [])
+                first["summary"] = " ".join(x for x in [first.get("summary"), data.get("summary")] if x)
+                first["stages"] = first.get("stages") or data.get("stages")
+            else:
+                roles[role] = data
     merged = _load(os.path.join(work, "merged.json"), default={})
     if not roles and not merged:
         raise DashboardError("No checked notes yet. Run board.py check for each role first.")
@@ -175,13 +187,16 @@ def build(work, title=None, language=None, generated_at=None, note=None):
     if ran - {"chief_editor"}:
         read = {u["id"] for u in units}
 
-    chapters = []
+    chapters, shown = [], set()
     for u in units:
         here = [n for n in notes if any(r["chapter"] == u["id"] for r in refs(n.get("evidence")))]
-        concern = next(
-            (n for n in here if n.get("kind") != "strength" and role_of(n.get("role")) != "reader_panel" and n.get("priority") != "low"),
-            None,
-        )
+        concerns = [n for n in here if n.get("kind") != "strength" and role_of(n.get("role")) != "reader_panel" and n.get("priority") != "low"]
+        # A note that quotes several chapters is shown in full under the first; a later chapter shows
+        # its next note, or only the first sentence when it has no other.
+        concern = next((n for n in concerns if id(n) not in shown), concerns[0] if concerns else None)
+        repeated = bool(concern) and id(concern) in shown
+        if concern:
+            shown.add(id(concern))
         status = "gray" if u["id"] not in read else "yellow" if concern else "green"
         stats = _chapter_stats(u)
         chapters.append(
@@ -198,7 +213,7 @@ def build(work, title=None, language=None, generated_at=None, note=None):
                 "review": {
                     "chapter": u["id"],
                     "status": status,
-                    "note": (concern or {}).get("message", "—"),
+                    "note": _first_sentence(concern["message"]) if repeated else (concern or {}).get("message", "—"),
                     "evidence": refs((concern or {}).get("evidence")),
                 },
             }

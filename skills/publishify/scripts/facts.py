@@ -48,7 +48,11 @@ def _is_name(word):
 def names(sentence):
     """Capitalised words that are not sentence openers, without a possessive or case suffix."""
     out = []
-    for i, w in enumerate(sentence.split()):
+    # Dialogue dashes and opening quotes are not words: the opener is the first token with a letter.
+    tokens = sentence.split()
+    while tokens and not re.search(r"[^\W\d_]", tokens[0]):
+        tokens = tokens[1:]
+    for i, w in enumerate(tokens):
         clean = re.sub(r"^[«“\"‘(—–-]+", "", w)
         clean = re.sub(r"[’'][^\W\d_]*$", "", clean)
         clean = re.sub(r"[\W\d_]+$", "", clean)
