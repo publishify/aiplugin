@@ -55,7 +55,13 @@ Answer `y` when it asks to continue. Check:
 gemini extensions list
 ```
 
-You should see `publishify (0.1.9)` or later, with the MCP server `publishify` and the agent skills `publishify` and `publishify-fiction`. Then start `gemini`, sign in to Publishify when asked (or run `/mcp auth publishify`), attach your manuscript and ask it to review the book with Publishify.
+You should see `publishify (0.1.9)` or later, with the MCP server `publishify` and the agent skills `publishify` and `publishify-fiction`. Then sign in to Publishify **inside** Gemini CLI (these are not shell commands):
+
+1. Run `gemini` in the terminal. Gemini's own prompt opens.
+2. At that prompt, type `/mcp auth publishify`. Publishify's sign-in page opens in the browser; continue with Google or an e-mail code.
+3. Still at Gemini's prompt, add your manuscript with `@` and ask for a review, for example: `@~/Desktop/my-book.docx Review this with Publishify, a preview is enough.`
+
+The first time, Gemini also asks you to sign in to Google for Gemini itself ("Gemini Code Assist and Gemini CLI"); that is separate from the Publishify sign-in. Type `/quit` to leave Gemini.
 
 The `npm warn` lines about `keytar` and `install-scripts` during the install are harmless.
 
