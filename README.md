@@ -69,7 +69,9 @@ Then add your manuscript and say *"Review this with Publishify"*, or run:
 
 You sign in to Publishify once (Google or an e-mail code). The form asks what you wrote and what you would like, in your own language, with an example answer for every question.
 
-[Installation details →](docs/installation.md)
+**Codex:** `codex plugin marketplace add publishify/plugin` · **ChatGPT:** a custom connector to `https://mcp.publishify.app` · **Gemini CLI:** `gemini extensions install https://github.com/publishify/plugin`
+
+[Installation for every app →](docs/installation.md)
 
 ## Plans
 

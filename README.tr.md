@@ -69,7 +69,9 @@ Sonra kitabını ekle ve *"Bunu Publishify ile incele"* de ya da:
 
 Publishify'a bir kez giriş yaparsın (Google ya da e-posta kodu). Form, ne yazdığını ve ne istediğini kendi dilinde, her soru için örnek bir cevapla sorar.
 
-[Kurulum ayrıntıları →](docs/installation.md)
+**Codex:** `codex plugin marketplace add publishify/plugin` · **ChatGPT:** `https://mcp.publishify.app` adresine özel bağlayıcı · **Gemini CLI:** `gemini extensions install https://github.com/publishify/plugin`
+
+[Her uygulama için kurulum →](docs/installation.md)
 
 ## Planlar
 

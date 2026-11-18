@@ -1,0 +1,11 @@
+{
+  "name": "publishify",
+  "version": "0.1.9",
+  "description": "The Publishify editorial board: quote-backed notes on your manuscript from an editor, a continuity checker and a reader panel. Your file never leaves your AI.",
+  "mcpServers": {
+    "publishify": {
+      "httpUrl": "https://mcp.publishify.app"
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}
