@@ -1,129 +1,118 @@
-<div align="center">
+<p align="center">
+  <a href="https://publishify.app/refine/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://publishify.app/img/logo-beyaz.svg">
+      <img src="https://publishify.app/img/logo-siyah.svg" alt="Publishify" width="220">
+    </picture>
+  </a>
+</p>
 
-# Publishify
+<h1 align="center">The Publishify editorial board</h1>
 
-### Your AI Editorial Board
+<p align="center"><strong>A publishing house behind your book, inside your own AI.</strong></p>
 
-**Write wherever you choose. Bring a board to your manuscript.**
+<p align="center">
+  <a href="#install"><strong>Install</strong></a> ·
+  <a href="https://publishify.app/sample-report/">Sample report</a> ·
+  <a href="https://publishify.app/pricing/">Pricing</a> ·
+  <a href="README.tr.md">Türkçe</a> ·
+  <a href="https://github.com/publishify/publishify">The Publishify editor</a>
+</p>
 
-[Website](https://publishify.app/) · [Türkçe README](README.tr.md) · [How it works](docs/architecture.md) · [Current status](docs/status.md)
+<p align="center">
+  <img src="docs/assets/editorial-board-en.png" width="720" alt="Illustration of the Publishify editorial board: the Wayfarer's Seven Stages ring above the board's roles at work">
+</p>
+<p align="center"><sub>An illustration with sample data, not a real review.</sub></p>
 
-![Stage: F1 development](https://img.shields.io/badge/stage-F1_development-7fb671)
-![First desk: Fiction](https://img.shields.io/badge/first_desk-Fiction-a9cf9c)
-![First host: Claude](https://img.shields.io/badge/first_host-Claude-7fb671)
+This is the editorial board of [Publishify](https://github.com/publishify/publishify), the writing editor at [write.publishify.app](https://write.publishify.app/). It is a plugin for the AI application you already use. An **Editor**, a **Continuity Checker**, a **panel of three readers** and an **Editor-in-Chief** read your book, give notes that each rest on a quotation from your text, and put everything in one dashboard you can open, print or share.
 
-</div>
+Write and export your book in Publishify, or bring a file from any other tool. **Your book never goes to Publishify's servers:** your own AI reads it, and the plugin's scripts run in your AI's own workspace. The final decision always stays with you.
 
-<p align="center"><img src="docs/assets/editorial-board-en.png" width="680" alt="Illustrative Publishify agent office and Seven Stages narrative map"></p>
-<p align="center"><em>A visual explanation of the intended board, not a real review or a benchmark result.</em></p>
+## The board
 
-Publishify is a comprehensive **AI editorial board plugin**. It brings an Editor, a Continuity Auditor and a simulated Reader Panel into the AI application you already use, then organises their findings into an evidence-linked dashboard and downloadable report.
-
-It is the editorial board of [Publishify](https://github.com/publishify/publishify), the writing editor at [write.publishify.app](https://write.publishify.app/): write and export your book there, or bring a file from any other tool. Your manuscript is processed in your AI environment. The final editorial decision stays with you.
-
-> **Status — 15 November 2026:** The product is being built. **F1 starts with the Fiction desk for Claude.** This repository currently contains the completed technical spike under `spike/`; the spike server has been retired. Production installation and full-book evaluation are not available yet. Do not use the old spike installation commands as a product setup guide.
-
-## A board with defined work
-
-| Role | What it examines | What it should return |
+| Role | What it reads for | What you get |
 | --- | --- | --- |
-| **Editor** | Chapter structure, pace, viewpoint, character behaviour and strengths | Source-linked observations, reasons and editorial questions |
-| **Continuity Auditor** | Names, dates, ages, events and candidate inconsistencies from the fact ledger | A reasoned finding with both relevant source locations |
-| **Reader Panel** | Curiosity, clarity, emotional response and reader expectations | Clearly labelled simulated reader perspectives |
+| **Editor** | Structure, pace, point of view, scenes that work and scenes that drift | Notes with the passage and location they rest on, strengths to keep, and the book mapped onto the Wayfarer's Seven Stages |
+| **Continuity Checker** | Names, ages, dates, deaths, counts and facts across distant chapters | Each contradiction with both quotations side by side |
+| **Reader panel** | Three simulated readers of your genre, reading apart from each other | Where each one grew curious, drifted away or will remember |
+| **Editor-in-Chief** | Everything the board wrote | One ordered list: the three things to look at first, then the rest |
 
-Python scripts handle measurable work: parsing files, splitting chapters, counting, locating quotations and extracting candidates for review. The AI interprets context. A matching quotation makes a note inspectable; it does not make its interpretation infallible.
+Python scripts do the measurable work: reading DOCX, EPUB, Markdown and text, splitting chapters and paragraphs, counting, listing facts, and **checking every quotation against your text**. A note whose quotation is not in the book is dropped before it reaches the dashboard. The board advises; it never rewrites your text and never gives scores or verdicts.
 
-[Explore the Fiction desk →](docs/fiction-desk.md)
+## The dashboard
 
-## From manuscript to dashboard
+One HTML file that opens offline in any browser:
 
-1. **Connect the plugin.** Authorise your Publishify account and choose the review scope when the product is released.
-2. **Attach the manuscript in your AI application.** File-processing scripts run in that AI environment.
-3. **Run the board.** The MCP service provides the desk, role cards and next assignment; your own AI carries out the reading.
-4. **Inspect the evidence.** Check quotations and compare passages rather than relying on a general verdict.
-5. **Open the report.** Structured results become a dashboard and downloadable output inside the AI environment.
+- **The Wayfarer's Seven Stages clock**, by Ali Osman Akçaoğlu: where each stage falls in your book, each with its quotation. A map, not a checklist.
+- **Key decisions** and the board's notes, every one with its quote and location.
+- **Chapter bars** with word counts and which chapters are worth a look.
+- **A character map:** who appears in how many paragraphs, and with whom.
+- **Word and sentence patterns:** repeated phrases and long sentences, counted, not judged.
 
-The board advises; it does not automatically rewrite your manuscript.
+**See it on a real book:** the board read the original French text of *The Little Prince* (27 chapters, 14,078 words) on 16 November 2026 and wrote 46 notes, among them a genuine contradiction in the book (forty-three sunsets in one chapter, forty-four in another), found and quoted by the Continuity Checker. [Open the sample report →](https://publishify.app/sample-report/)
 
-## What runs where?
+## Install
 
-| Your AI environment | Publishify MCP service |
-| --- | --- |
-| Manuscript file and extracted full text | Sign-in and account identity |
-| Reading agents and model usage | Email-linked licences and usage allowances |
-| Python parsing, counting and quotation checks | Session and task coordination |
-| Contextual interpretation | Versioned desk catalogue and role cards |
-| Dashboard and report generation | Validation of submitted tool results |
-
-**The manuscript file and extracted full text are not uploaded to Publishify.** Submitted results can contain short quotations. The AI provider still processes your attachment under its own terms. Publishify does not run the reading model on its server or offer a persistent server-side manuscript/report archive.
-
-[Architecture and data boundaries →](docs/architecture.md) · [Privacy →](docs/privacy.md)
-
-## Installation
-
-**There is no production installation recipe yet.** The repository still exposes a test marketplace and retired spike code; installing that package will not start a production review.
-
-F1 is preparing a plugin package for Claude with these planned commands:
+The first release is for **Claude**: Claude Code and the Claude desktop app with plugins.
 
 ```text
-/publishify:review
+/plugin marketplace add publishify/plugin
+/plugin install publishify@publishify
+```
+
+Then add your manuscript and say *"Review this with Publishify"*, or run:
+
+```text
+/publishify:review my-book.docx
 /publishify:status
 ```
 
-Command syntax, sign-in and UI capabilities depend on the host. The release guide will replace this section after the real package, OAuth service and Fiction quality evaluation pass acceptance checks. [Installation and prerequisites →](docs/installation.md)
+You sign in to Publishify once (Google or an e-mail code). The form asks what you wrote and what you would like, in your own language, with an example answer for every question.
 
-## What has actually been tested?
+[Installation details →](docs/installation.md)
 
-Founder-recorded technical trials on **15 November 2026** used a small sample file and the spike server. They checked transport, UI and execution — not novel-reading quality.
+## Plans
 
-| Host | Observed in the trial | Still unverified or limited |
-| --- | --- | --- |
-| **Claude web** | Sign-in, form, window/button, scripts on an attached sample | Visual confirmation of the cloud upload path; full product review |
-| **Claude desktop** | Plugin package, connection, UI and scripts | Initial file trial ran on the Mac, not a cloud attachment |
-| **Claude Code — desktop Code tab** | Commands, connection and scripts | Form did not render; window button failed; terminal is a separate test |
-| **ChatGPT Plus** | Custom OAuth MCP, form, window/button, attached Python script | Packaged-skill installation; Free/Pro plan behaviour |
-| **Codex CLI** | Unmodified Claude package installed; OAuth and scripts | Forms/inline windows absent; state-changing tools required approval |
+- **Free:** three previews a month. The Editor reads and gives the most useful notes.
+- **Single review, packs and Pro:** for the whole board. Pro is $19 a month or $190 a year. Publishers, agencies and universities can apply for a custom plan.
+- **Your AI usage** runs on your own AI account, within your provider's limits; Publishify charges only for the board.
 
-Cursor and Gemini CLI were not tested. Real separate-context subagents were not tested. These observations are not universal availability guarantees. [Evidence and acceptance criteria →](docs/status.md)
+Payments are handled by Paddle, our merchant of record. [Pricing →](https://publishify.app/pricing/) · [Refunds →](https://publishify.app/refunds/)
 
-## The first release, without the guesswork
+## What runs where
 
-- **Desk:** Fiction, for novels and stories; Claude first.
-- **Inputs being prepared:** DOCX, EPUB, Markdown and TXT. PDF is a report output, not a promised F1 manuscript input.
-- **Narrative lens:** Ali Osman Akçaoğlu’s *Wayfarer’s Seven Stages* — a map, not a mandatory plot formula.
-- **Pricing:** Not announced. Limited one-off, monthly and yearly licences and three free preliminary reviews per month are planned; limits and re-review allowances must be stated before sales open.
-- **AI usage:** Runs through the user's AI account, under that provider's limits. Publishify's service licence is separate.
+| In your AI application | On the Publishify server (`mcp.publishify.app`) |
+| --- | --- |
+| Your manuscript and its full text | Sign-in and your licence |
+| The reading, with your own AI account | The desk catalogue and the role cards |
+| The scripts: reading, counting, quotation checks | Each board's order of work |
+| The dashboard | Usage counts, never the text |
 
-[Read the F1 roadmap →](docs/roadmap.md)
+Notes you keep can contain short quotations; your AI provider processes your attachment under its own terms. [Architecture →](docs/architecture.md) · [Privacy →](docs/privacy.md)
 
-## More desks, when they are ready
+## Status
 
-The wider product plan covers **Books, Publication Preparation, Students, Academic, and Business/Institutions**. These are roadmap groups, not completed products. The first build does not promise all desks at launch. Contracts, patents and medical texts are outside the defined scope.
+18 November 2026: plugin version 0.1.7. The **Fiction desk** (novels and stories) is ready in Claude; the first full board on a whole book ran on 16 November 2026. Desks for non-fiction, children's books, articles and theses, and support for ChatGPT, Codex, Cursor and Gemini, follow. [Current status →](docs/status.md) · [Roadmap →](docs/roadmap.md)
 
 ## Repository map
 
 ```text
-.claude-plugin/marketplace.json   Existing test marketplace; not the product release
-spike/                          Retired technical trial, preserved as history
-README.md                       English introduction
-README.tr.md                    Türkçe tanıtım
-docs/architecture.md            Responsibility and data boundaries
-docs/fiction-desk.md            First desk: roles, evidence and outputs
-docs/installation.md            Prerequisites and installation status
-docs/status.md                  What the trials establish — and do not
-docs/roadmap.md                 F1 scope and release gates
-docs/privacy.md                 Manuscript handling and service data
-docs/contributing.md            Documentation and contribution guidelines
-docs/assets/                    Website board artwork, PNG and SVG, EN/TR
+.claude-plugin/                 Plugin and marketplace manifests
+commands/                       /publishify:review and /publishify:status
+skills/publishify/              The core board flow and its scripts
+  scripts/board.py              Prepare the book, check quotes, merge the board's notes
+  scripts/dashboard.py          Build the offline dashboard
+  scripts/people.py             The character map
+  scripts/text.py, facts.py, quotes.py
+skills/publishify-fiction/      The Fiction desk
+docs/                           Architecture, privacy, installation, status, roadmap
+spike/                          The retired technical trial, kept as history
 ```
 
-## Contribute and follow
+## Contribute
 
-Start with [contributing](docs/contributing.md). Keep technical-spike history separate from product code. Do not submit manuscripts, personal information, credentials or private server implementation in public issues.
+Start with [contributing](docs/contributing.md). Never put a manuscript, personal data or credentials in an issue.
 
-- [The Publishify writing editor](https://github.com/publishify/publishify)
-- [English website](https://publishify.app/) · [Türkçe site](https://publishify.app/tr/)
-- [Seven Stages guide](https://publishify.app/blog/the-wayfarers-seven-stages/)
-- [Contact](mailto:info@publishify.app)
+No open-source licence has been chosen for this repository; public visibility alone does not grant a licence to reuse the code, brand or artwork.
 
-No open-source software licence has been selected in this repository. Public visibility alone does not grant a licence to reuse the code, brand or artwork. Do not describe this project as MIT-licensed unless an actual licence is added.
+**Contact:** [info@publishify.app](mailto:info@publishify.app)

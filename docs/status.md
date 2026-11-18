@@ -1,5 +1,14 @@
 # Verification record and limits
 
+## 18 November 2026
+
+- **Plugin 0.1.7** installs from `publishify/plugin` in Claude Code and the Claude desktop app; the board server runs at `mcp.publishify.app`.
+- **First full board on a whole book: 16 November 2026.** *The Little Prince*, original French, 27 chapters, 14,078 words, Fiction desk, full board, report in Turkish. Editor 34 notes and all seven stages, Continuity Checker 5, Reader panel 12 (one dropped because its quotation did not match the text), Editor-in-Chief 46 notes in the dashboard; 14 characters and 14 quoted ties in the character map. The checker found a genuine contradiction in the book (43 and 44 sunsets). [Sample report](https://publishify.app/sample-report/)
+- Fixed after that run: the dashboard notice that the book stays with the person, every reader's reaction kept, stage quotations proved, a quieter name list (0.1.5 to 0.1.7).
+- Still open: the Fiction evaluation set in Claude, other AI applications, and Paddle checkout (waiting for Paddle's approval of publishify.app).
+
+The 15 November trial record below is kept as history.
+
 Founder-recorded trials: 15 November 2026. This document summarises the supplied trial record; it does not claim a fresh independent reproduction.
 
 ## Observed

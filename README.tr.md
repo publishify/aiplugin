@@ -1,70 +1,92 @@
-# Publishify — Your AI Editorial Board
+<p align="center">
+  <a href="https://publishify.app/tr/gelistir/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://publishify.app/img/logo-beyaz.svg">
+      <img src="https://publishify.app/img/logo-siyah.svg" alt="Publishify" width="220">
+    </picture>
+  </a>
+</p>
 
-**Publishify kapsamlı bir yayın kuruludur.**
+<h1 align="center">Publishify yayın kurulu</h1>
 
-İstediğin yerde yaz. Metnine, kendi yapay zekânda bir de kurul baksın.
+<p align="center"><strong>Kitabının arkasında bir yayınevi, kendi yapay zekânın içinde.</strong></p>
 
-[Site](https://publishify.app/tr/) · [English README](README.md) · [İş akışı](docs/architecture.md) · [Güncel durum](docs/status.md)
+<p align="center">
+  <a href="#kurulum"><strong>Kur</strong></a> ·
+  <a href="https://publishify.app/tr/ornek-rapor/">Örnek rapor</a> ·
+  <a href="https://publishify.app/tr/fiyatlar/">Fiyatlar</a> ·
+  <a href="README.md">English</a> ·
+  <a href="https://github.com/publishify/publishify">Publishify yazı editörü</a>
+</p>
 
-![Publishify yayın kurulu ve Yolcunun Yedi Merhalesi](docs/assets/editorial-board-tr.png)
+<p align="center">
+  <img src="docs/assets/editorial-board-tr.png" width="720" alt="Publishify yayın kurulu görseli: Yolcunun Yedi Merhalesi halkası ve çalışan kurul rolleri">
+</p>
+<p align="center"><sub>Örnek verilerle hazırlanmış bir görsel; gerçek bir inceleme değildir.</sub></p>
 
-*Temsilî kurul görselidir; gerçek bir kitap incelemesi veya ölçüm sonucu değildir.*
+Bu, [write.publishify.app](https://write.publishify.app/?lang=tr) adresindeki yazı editörü [Publishify](https://github.com/publishify/publishify)'ın yayın kuruludur. Zaten kullandığın yapay zekâ uygulamasına eklenen bir eklentidir. **Editör**, **Süreklilik denetçisi**, **üç kişilik Okur Paneli** ve **Yayın yönetmeni** kitabını okur; her notu kitabından bir alıntıya dayanır. Hepsi tek bir panoda toplanır: açarsın, yazdırırsın, editörünle paylaşırsın.
 
-Publishify, zaten kullandığın yapay zekâ uygulamasına eklenen bir **yayın kurulu eklentisi**. Editör, Süreklilik denetçisi ve simüle Okur Paneli; metne bağlı notlarını bir pano ve indirilebilir raporda buluşturmak için birlikte çalışır.
+Kitabını Publishify'da yazıp dışa aktarabilir ya da başka bir araçtan dosya getirebilirsin. **Kitabın Publishify sunucularına gitmez:** onu kendi yapay zekân okur, eklentinin betikleri yapay zekânın kendi çalışma alanında çalışır. Son karar her zaman sende.
 
-> **15 Kasım 2026 — Ürün geliştirmesi sürüyor.** İlk kapsam Claude için **Kurgu masası**. Depodaki `spike/` tamamlanmış teknik denemenin kaydıdır; sunucusu kaldırılmıştır. Üretim kurulumu ve tam roman kalite ölçümü henüz hazır değil. Eski deneme komutları ürün kurulumu değildir.
+## Kurul
 
-## Kurulda kim var?
+| Rol | Neye bakar | Sana ne verir |
+| --- | --- | --- |
+| **Editör** | Yapı, tempo, bakış açısı, işleyen ve dağılan sahneler | Dayandığı pasaj ve yeriyle notlar, korunacak güçlü yanlar ve kitabın Yolcunun Yedi Merhalesi haritası |
+| **Süreklilik denetçisi** | Uzak bölümler arasında adlar, yaşlar, tarihler, ölümler, sayılar | Her çelişki, iki alıntısı yan yana |
+| **Okur Paneli** | Türünün üç canlandırılmış okuru, birbirinden habersiz | Her birinin nerede merak ettiği, nerede uzaklaştığı, neyi hatırlayacağı |
+| **Yayın yönetmeni** | Kurulun yazdığı her şey | Tek sıralı liste: önce bakılacak üç şey, sonra geri kalanı |
 
-| Rol | Görev |
-| --- | --- |
-| **Editör** | Bölüm yapısı, tempo, bakış açısı, karakter davranışları ve güçlü yanlar |
-| **Süreklilik denetçisi** | Olgu dosyası ve betik adaylarından hareketle isim, tarih, yaş ve olay tutarlılığı |
-| **Okur Paneli** | Farklı okur bakışlarından merak, açıklık, duygusal etki ve beklenti |
+Ölçülebilir işi Python betikleri yapar: DOCX, EPUB, Markdown ve metin okumak, bölüm ve paragraflara ayırmak, saymak, olguları listelemek ve **her alıntıyı kitabında aramak**. Alıntısı kitapta bulunmayan not panoya giremez. Kurul tavsiye verir; metnini yeniden yazmaz, puan ya da hüküm vermez.
 
-Betikler dosyayı okur, böler, sayar ve kaynakları eşleştirir. Yapay zekâ bağlamı yorumlar. Alıntının metinde bulunması, yorumun mutlaka doğru olduğu anlamına gelmez. Son karar yazarda veya sorumlu editördedir.
+## Pano
 
-## Nasıl çalışacak?
+İnternetsiz açılan tek bir HTML dosyası:
 
-1. Eklentiyi kurup Publishify hesabınla giriş yaparsın.
-2. Kurgu masasını ve inceleme kapsamını seçersin.
-3. Dosyanı AI uygulamasına eklersin; Python betikleri o ortamda işler.
-4. Sunucu rol kartlarını ve sıradaki görevi verir; okuma kendi yapay zekânda yapılır.
-5. Kaynakları görünen notları panoda inceler, raporunu indirirsin.
+- **Yolcunun Yedi Merhalesi (Kahramanın Yolculuğu Şablonu) saati**, Ali Osman Akçaoğlu'nun yaklaşımı: her merhalenin kitabında nereye düştüğü, alıntısıyla. Bir harita, kontrol listesi değil.
+- **Ana kararlar** ve kurulun notları; her biri alıntısı ve yeriyle.
+- **Bölüm çubukları:** sözcük sayıları ve bakmaya değer bölümler.
+- **Karakter haritası:** kim kaç paragrafta, kiminle geçiyor.
+- **Sözcük ve cümle kalıpları:** tekrar eden öbekler ve uzun cümleler; sayılır, yargılanmaz.
 
-**Dosya ve çıkarılan tam metin Publishify sunucusuna gönderilmez.** Sonuçlar kısa alıntılar içerebilir. AI sağlayıcının dosya işleme koşulları geçerlidir; “Publishify’a yüklenmez” demek “hiçbir bulutta işlenmez” demek değildir.
+**Gerçek bir kitapta gör:** Kurul 16 Kasım 2026'da *Küçük Prens*'in özgün Fransızca metnini (27 bölüm, 14.078 sözcük) okudu ve 46 not yazdı. Bunlardan biri kitaptaki gerçek bir çelişki: bir bölümde kırk üç, başka bir bölümde kırk dört gün batımı. Süreklilik denetçisi iki alıntısıyla buldu. [Örnek raporu aç →](https://publishify.app/tr/ornek-rapor/)
 
-Sunucu; giriş, lisans, kullanım hakkı, oturum, masa kataloğu ve görev akışını yönetir. Pano ve rapor AI ortamında oluşur. Sunucuda okuma modeli ya da kalıcı kitap/rapor arşivi sunulmuyor.
+## Kurulum
 
-## Kurulum durumu
-
-Üretim kurulum rehberi henüz yayımlanmadı. Planlanan komutlar:
+İlk sürüm **Claude** için: Claude Code ve eklenti destekli Claude masaüstü uygulaması.
 
 ```text
-/publishify:review
+/plugin marketplace add publishify/plugin
+/plugin install publishify@publishify
+```
+
+Sonra kitabını ekle ve *"Bunu Publishify ile incele"* de ya da:
+
+```text
+/publishify:review kitabim.docx
 /publishify:status
 ```
 
-İlk hedef Claude. ChatGPT Plus ve Codex CLI teknik denemeleri, tamamlanmış ürün entegrasyonu anlamına gelmiyor. Dosya biçimleri için DOCX, EPUB, Markdown ve TXT hazırlanıyor; PDF rapor çıktısıdır.
+Publishify'a bir kez giriş yaparsın (Google ya da e-posta kodu). Form, ne yazdığını ve ne istediğini kendi dilinde, her soru için örnek bir cevapla sorar.
 
-## Ücret ve kapsam
+[Kurulum ayrıntıları →](docs/installation.md)
 
-Kesin fiyat yok. Limitli tek seferlik, aylık ve yıllık lisanslar; ayda üç ücretsiz ön değerlendirme planlanıyor. Kelime sınırı ve yeniden inceleme kapsamı satıştan önce açıklanacak. Okumalar kendi AI hesabında, sağlayıcının kullanım koşullarıyla çalışır.
+## Planlar
 
-Kurgu dışındaki kitap, yayına hazırlık, öğrenci, akademik ve kurum masaları yol haritasındadır. Sözleşme, patent ve tıbbi metinler kapsam dışıdır.
+- **Ücretsiz:** ayda üç ön değerlendirme. Editör okur, en faydalı notları verir.
+- **Tek inceleme, paketler ve Pro:** bütün kurul için. Pro ayda 19 $ ya da yılda 190 $. Yayınevi, ajans ve üniversiteler özel paket için başvurabilir.
+- **Yapay zekâ kullanımı** kendi hesabında, sağlayıcının sınırları içinde çalışır; Publishify yalnızca kurul için ücret alır.
+
+Ödemeleri satıcı kayıtlı aracımız Paddle yürütür. [Fiyatlar →](https://publishify.app/tr/fiyatlar/) · [İade →](https://publishify.app/tr/iade/)
+
+## Durum
+
+18 Kasım 2026: eklenti sürümü 0.1.7. **Kurgu masası** (roman ve öykü) Claude'da hazır; bütün bir kitap üzerindeki ilk tam kurul 16 Kasım 2026'da çalıştı. Kurgu dışı, çocuk kitabı, makale ve tez masaları ile ChatGPT, Codex, Cursor ve Gemini desteği sırada. [Güncel durum →](docs/status.md) · [Yol haritası →](docs/roadmap.md)
 
 ## Belgeler
 
-- [Mimari ve veri akışı](docs/architecture.md)
-- [Kurgu masası](docs/fiction-desk.md)
-- [Kurulum ve önkoşullar](docs/installation.md)
-- [Deneme sonuçları ve açık noktalar](docs/status.md)
-- [F1 yol haritası](docs/roadmap.md)
-- [Gizlilik sınırları](docs/privacy.md)
-- [Katkı rehberi](docs/contributing.md)
+[Mimari ve veri akışı](docs/architecture.md) · [Kurgu masası](docs/fiction-desk.md) · [Kurulum](docs/installation.md) · [Gizlilik](docs/privacy.md) · [Katkı rehberi](docs/contributing.md)
 
-[Yolcunun Yedi Merhalesi](https://publishify.app/tr/blog/yolcunun-yedi-merhalesi/), **Ali Osman Akçaoğlu** tarafından geliştirilen bir anlatı merceğidir; zorunlu olay örgüsü kalıbı değildir.
+Depoda henüz yazılım lisansı seçilmedi; deponun açık görünmesi kod, marka veya görsel için yeniden kullanım izni vermez.
 
-[Publishify yazı editörü](https://github.com/publishify/publishify) · [İletişim](mailto:info@publishify.app)
-
-Depoda henüz yazılım lisansı seçilmedi. Deponun açık görünmesi, kod, marka veya görsel için kendiliğinden yeniden kullanım izni vermez.
+**İletişim:** [info@publishify.app](mailto:info@publishify.app)

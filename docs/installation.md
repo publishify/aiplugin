@@ -1,22 +1,39 @@
-# Installation status
+# Installation
 
-**Production installation is not released.** Do not install the retired spike expecting a live editorial board.
+The first release is for **Claude**: Claude Code and the Claude desktop app with plugins. Version 0.1.7, 18 November 2026.
 
-## Current repository
+## Claude Code and the Claude desktop app
 
-The root marketplace is still called `publishify-test` and points to `publishify-spike` in `spike/`. Its server was removed after technical validation. These files are preserved as trial history. This documentation change does not rename the marketplace or implement the product.
+```text
+/plugin marketplace add publishify/plugin
+/plugin install publishify@publishify
+```
 
-## F1 target
+From a terminal, the same with the `claude` command:
 
-A Publishify plugin package for Claude, a Publishify sign-in, a Fiction desk selection and an attachment processed in the AI host. Planned commands are `/publishify:review` and `/publishify:status`; exact host-specific syntax will be verified before release.
+```sh
+claude plugin marketplace add publishify/plugin
+claude plugin install publishify@publishify
+```
 
-## Prerequisites to state at release
+To update later: `claude plugin marketplace update publishify`, then `claude plugin update publishify@publishify`, and restart Claude.
 
-- A supported AI application and account with the required plugin, connector and execution capabilities.
-- Access to the host's code-execution environment for the bundled Python scripts.
-- A Publishify account and any required review allowance.
-- For CLI clients: the client's own runtime requirements. Do not impose local Node.js, Python or `claude -p` on cloud-chat users without an actual requirement.
+The plugin adds the Publishify connector (`https://mcp.publishify.app`), two commands (`/publishify:review`, `/publishify:status`) and the board's skills and scripts.
 
-Host availability depends on client version, account and permissions. Do not infer plan eligibility from one account's trial or confuse web, desktop and CLI capabilities.
+## First run
 
-The production endpoint will only be documented as usable after it has been deployed and tested. No credential or private server implementation belongs in this public repository.
+1. Add your manuscript (DOCX, EPUB, Markdown or TXT) and run `/publishify:review`, or say "Review this with Publishify".
+2. Sign in to Publishify when asked: Google or a code sent to your e-mail.
+3. Answer the form in your own language: what you wrote, what you would like, and the questions for your work.
+4. The board reads in turn. When it finishes, you get `publishify-work/dashboard.html`.
+
+## What you need
+
+- Claude with plugins and code execution (the scripts need Python 3; nothing else to install).
+- A Publishify account. Three previews a month are free; the full board uses one review from your plan. [Pricing](https://publishify.app/pricing/)
+
+## Other AI applications
+
+ChatGPT, Codex, Cursor and Gemini are on the roadmap. Codex can install the same package (`codex plugin marketplace add publishify/plugin`), but forms and windows are not available there yet. [Status](status.md)
+
+The old name `publishify/aiplugin` still redirects to this repository; use `publishify/plugin`.
