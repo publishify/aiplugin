@@ -4,5 +4,5 @@
   "version": "0.0.1",
   "description": "Throwaway test plugin for Publishify's capability checks. Not the product.",
   "author": { "name": "Publishify", "url": "https://publishify.app" },
-  "repository": "https://github.com/publishify/aiplugin"
+  "repository": "https://github.com/publishify/plugin"
 }

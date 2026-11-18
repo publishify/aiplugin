@@ -65,6 +65,6 @@ Kurgu dışındaki kitap, yayına hazırlık, öğrenci, akademik ve kurum masal
 
 [Yolcunun Yedi Merhalesi](https://publishify.app/tr/blog/yolcunun-yedi-merhalesi/), **Ali Osman Akçaoğlu** tarafından geliştirilen bir anlatı merceğidir; zorunlu olay örgüsü kalıbı değildir.
 
-[Site kaynakları](https://github.com/publishify/publishify) · [İletişim](mailto:info@publishify.app)
+[Publishify yazı editörü](https://github.com/publishify/publishify) · [İletişim](mailto:info@publishify.app)
 
 Depoda henüz yazılım lisansı seçilmedi. Deponun açık görünmesi, kod, marka veya görsel için kendiliğinden yeniden kullanım izni vermez.

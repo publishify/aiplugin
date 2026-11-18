@@ -19,7 +19,7 @@
 
 Publishify is a comprehensive **AI editorial board plugin**. It brings an Editor, a Continuity Auditor and a simulated Reader Panel into the AI application you already use, then organises their findings into an evidence-linked dashboard and downloadable report.
 
-Your writing tool stays your choice. Your manuscript is processed in your AI environment. The final editorial decision stays with you.
+It is the editorial board of [Publishify](https://github.com/publishify/publishify), the writing editor at [write.publishify.app](https://write.publishify.app/): write and export your book there, or bring a file from any other tool. Your manuscript is processed in your AI environment. The final editorial decision stays with you.
 
 > **Status — 15 November 2026:** The product is being built. **F1 starts with the Fiction desk for Claude.** This repository currently contains the completed technical spike under `spike/`; the spike server has been retired. Production installation and full-book evaluation are not available yet. Do not use the old spike installation commands as a product setup guide.
 
@@ -121,7 +121,7 @@ docs/assets/                    Website board artwork, PNG and SVG, EN/TR
 
 Start with [contributing](docs/contributing.md). Keep technical-spike history separate from product code. Do not submit manuscripts, personal information, credentials or private server implementation in public issues.
 
-- [Public website source](https://github.com/publishify/publishify)
+- [The Publishify writing editor](https://github.com/publishify/publishify)
 - [English website](https://publishify.app/) · [Türkçe site](https://publishify.app/tr/)
 - [Seven Stages guide](https://publishify.app/blog/the-wayfarers-seven-stages/)
 - [Contact](mailto:info@publishify.app)
