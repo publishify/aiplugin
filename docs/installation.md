@@ -7,7 +7,7 @@ Plugin version 0.1.9, 19 November 2026. The board server for every app is `https
 | Claude Code and the Claude desktop app | Plugin marketplace | Ready; full board tested |
 | Codex | Plugin marketplace | Installs; no forms or windows yet |
 | ChatGPT | Custom connector | Sign-in, form and window tested on 15 Nov; full board not yet |
-| Gemini CLI (terminal) | Extension | Not yet tested |
+| Gemini CLI (terminal) | Extension | Installs; server and both skills are picked up (19 Nov); full board not yet |
 | Gemini web and mobile app | Not possible | Accepts only Google's own integrations |
 
 ## Claude Code and the Claude desktop app
@@ -42,13 +42,24 @@ The connector brings the form and the role cards. The scripts (quotation checks,
 
 ## Gemini CLI
 
+Gemini CLI is Google's terminal tool. It needs Node.js 20 or later.
+
 ```sh
+npm install -g @google/gemini-cli
 gemini extensions install https://github.com/publishify/plugin
 ```
 
-The extension (`gemini-extension.json`) adds the Publishify server and the board's instructions (`GEMINI.md`). Not yet tested end to end.
+Answer `y` when it asks to continue. Check:
 
-This is for **Gemini CLI**, the terminal tool. The Gemini web and mobile app (gemini.google.com) does not accept third-party extensions or MCP servers, so Publishify cannot be added there.
+```sh
+gemini extensions list
+```
+
+You should see `publishify (0.1.9)` or later, with the MCP server `publishify` and the agent skills `publishify` and `publishify-fiction`. Then start `gemini`, sign in to Publishify when asked (or run `/mcp auth publishify`), attach your manuscript and ask it to review the book with Publishify.
+
+The `npm warn` lines about `keytar` and `install-scripts` during the install are harmless.
+
+The Gemini web and mobile app (gemini.google.com) does not accept third-party extensions or MCP servers, so Publishify cannot be added there.
 
 ## If something goes wrong
 
