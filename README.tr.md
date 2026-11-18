@@ -87,6 +87,6 @@ Publishify'a bir kez giriş yaparsın (Google ya da e-posta kodu). Form, ne yazd
 
 [Mimari ve veri akışı](docs/architecture.md) · [Kurgu masası](docs/fiction-desk.md) · [Kurulum](docs/installation.md) · [Gizlilik](docs/privacy.md) · [Katkı rehberi](docs/contributing.md)
 
-Depoda henüz yazılım lisansı seçilmedi; deponun açık görünmesi kod, marka veya görsel için yeniden kullanım izni vermez.
+Kod [MIT lisansıyla](LICENSE) açıktır. Publishify adı, logosu ve görselleri bu lisansa dahil değildir. Rol kartları ve masa kataloğu bu depoda değil, gizli sunucuda durur.
 
 **İletişim:** [info@publishify.app](mailto:info@publishify.app)

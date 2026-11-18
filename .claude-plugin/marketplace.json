@@ -3,14 +3,14 @@
   "owner": { "name": "Publishify", "url": "https://publishify.app" },
   "metadata": {
     "description": "Publishify — Your AI Editorial Board.",
-    "version": "0.1.8"
+    "version": "0.1.9"
   },
   "plugins": [
     {
       "name": "publishify",
       "source": "./",
       "description": "An editorial board in your own AI: pick a desk, add your manuscript with +, and get quote-backed notes from an editor, a continuity checker and a reader panel. Your file never leaves your AI.",
-      "version": "0.1.8",
+      "version": "0.1.9",
       "category": "productivity",
       "keywords": ["writing", "editing", "manuscript", "fiction", "publishing", "editorial board"]
     }

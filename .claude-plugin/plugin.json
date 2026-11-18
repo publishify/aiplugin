@@ -1,7 +1,7 @@
 {
   "name": "publishify",
   "displayName": "Publishify",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Publishify — Your AI Editorial Board. Pick a desk, add your manuscript, and get quote-backed notes from an editorial board that runs in your own AI. Your file never leaves your AI.",
   "author": {
     "name": "Publishify",
@@ -17,5 +17,6 @@
     "publishing",
     "editorial board"
   ],
-  "privacyPolicyUrl": "https://publishify.app/privacy"
+  "privacyPolicyUrl": "https://publishify.app/privacy",
+  "license": "MIT"
 }

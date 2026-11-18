@@ -112,6 +112,6 @@ docs/                           Architecture, privacy, installation, status, roa
 
 Start with [contributing](docs/contributing.md). Never put a manuscript, personal data or credentials in an issue.
 
-No open-source licence has been chosen for this repository; public visibility alone does not grant a licence to reuse the code, brand or artwork.
+The code is under the [MIT licence](LICENSE). The Publishify name, logo and artwork are not covered by it. The role cards and desk catalogue live on the private server, not in this repository.
 
 **Contact:** [info@publishify.app](mailto:info@publishify.app)
