@@ -106,7 +106,6 @@ skills/publishify/              The core board flow and its scripts
   scripts/text.py, facts.py, quotes.py
 skills/publishify-fiction/      The Fiction desk
 docs/                           Architecture, privacy, installation, status, roadmap
-spike/                          The retired technical trial, kept as history
 ```
 
 ## Contribute
