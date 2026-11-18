@@ -24,16 +24,18 @@ Then add your manuscript (DOCX, EPUB, Markdown or TXT) and run `/publishify:revi
 
 ```sh
 codex plugin marketplace add publishify/plugin
-codex plugin add publishify
+codex plugin add publishify@publishify
 ```
 
-Codex installs the same package. It has no forms or windows: answer the board's questions in chat, and approve the tool calls Codex asks about.
+Check: Codex should report `publishify@publishify` with the current version (0.1.9 or later). Codex installs the same package as Claude. It has no forms or windows: answer the board's questions in chat, and approve the tool calls Codex asks about.
 
 ## ChatGPT
 
-1. Settings → Apps (Connectors) → turn on developer mode → **Create** a custom connector.
-2. Name: Publishify. URL: `https://mcp.publishify.app`. Authentication: OAuth.
-3. In a chat, turn on the Publishify connector, attach your manuscript, and ask ChatGPT to review it with Publishify.
+1. ChatGPT desktop or web → **Customize → Plugins → Add**.
+2. Name: `publishify`. Connection: **Server URL** `https://mcp.publishify.app`. Authentication: **OAuth**.
+3. Tick **I understand and want to continue**, then **Create as a plugin**.
+4. **Connect publishify** and sign in (Google or an e-mail code). The plugin page should then show your connected account and the URL `https://mcp.publishify.app`.
+5. In a new chat, choose Publishify with **+**, attach your manuscript, and ask ChatGPT to review it with Publishify.
 
 The connector brings the form and the role cards. The scripts (quotation checks, dashboard) are in this repository's `skills/publishify/scripts/`; until a ChatGPT package is ready, attach them to the chat with your manuscript.
 
@@ -44,6 +46,28 @@ gemini extensions install https://github.com/publishify/plugin
 ```
 
 The extension (`gemini-extension.json`) adds the Publishify server and the board's instructions (`GEMINI.md`). Not yet tested end to end.
+
+## If something goes wrong
+
+**"publishify is already registered from a different source"** (Claude or Codex). An older Publishify marketplace (the retired Masthead or test package) is still registered under the same name. Remove it, then add the current one:
+
+```sh
+# Claude
+claude plugin marketplace remove publishify
+claude plugin marketplace add publishify/plugin
+claude plugin install publishify@publishify
+
+# Codex
+codex plugin marketplace remove publishify
+codex plugin marketplace add publishify/plugin
+codex plugin add publishify@publishify
+```
+
+**It installed `masthead` (version 0.1.x).** That is the retired Masthead plugin from the old marketplace. Remove it (`claude plugin uninstall masthead@publishify` or `codex plugin remove masthead@publishify`), then run the commands above.
+
+**`publishify/aiplugin`.** The old address still redirects here, but always use `publishify/plugin`.
+
+**The connector asks to sign in again.** Sign in with the same Google account or e-mail as before; your licence belongs to that e-mail.
 
 ## What you need
 
