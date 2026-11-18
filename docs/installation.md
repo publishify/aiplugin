@@ -7,7 +7,8 @@ Plugin version 0.1.9, 19 November 2026. The board server for every app is `https
 | Claude Code and the Claude desktop app | Plugin marketplace | Ready; full board tested |
 | Codex | Plugin marketplace | Installs; no forms or windows yet |
 | ChatGPT | Custom connector | Sign-in, form and window tested on 15 Nov; full board not yet |
-| Gemini CLI | Extension | Not yet tested |
+| Gemini CLI (terminal) | Extension | Not yet tested |
+| Gemini web and mobile app | Not possible | Accepts only Google's own integrations |
 
 ## Claude Code and the Claude desktop app
 
@@ -46,6 +47,8 @@ gemini extensions install https://github.com/publishify/plugin
 ```
 
 The extension (`gemini-extension.json`) adds the Publishify server and the board's instructions (`GEMINI.md`). Not yet tested end to end.
+
+This is for **Gemini CLI**, the terminal tool. The Gemini web and mobile app (gemini.google.com) does not accept third-party extensions or MCP servers, so Publishify cannot be added there.
 
 ## If something goes wrong
 
